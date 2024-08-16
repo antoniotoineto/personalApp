@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ExploreScreen() {
   const [custoDeVida, setCustoDeVida] = useState(0);
@@ -7,13 +9,21 @@ export default function ExploreScreen() {
 
   const valorLivre = 3355 - custoDeVida - valorInvestimento;
 
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.component}>
         <Text style={styles.title}>Custo de Vida Mensal</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('CustoDeVida')}>
+          <Icon name="chevron-right" size={30} color="#000" />
+        </TouchableOpacity>
       </View>
       <View style={styles.component}>
         <Text style={styles.title}>Valores para Investimentos</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Investimento')}>
+          <Icon name="chevron-right" size={30} color="#000" />
+        </TouchableOpacity>
       </View>
       <View style={styles.component}>
         <Text style={styles.title}>Valor livre</Text>
