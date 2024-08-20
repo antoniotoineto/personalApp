@@ -1,14 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Link } from 'expo-router';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function CustoDeVidaScreen() {
-  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
+      <View style={styles.chevronLeftContainer}>
+        <Link href='/(tabs)/explore'>
+          <Icon name="chevron-left" size={30} color="#000" />
+        </Link>
+      </View>
       <Text style={styles.text}>Custo de Vida: a fazer</Text>
-      <Button title="Voltar" onPress={() => navigation.goBack()} />
     </View>
   );
 }
@@ -18,10 +22,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff'
   },
   text: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  chevronLeftContainer: {
+    position: 'absolute',
+    top: 70, // Ajuste a distância do topo conforme necessário
+    left: 30, // Ajuste a distância da esquerda conforme necessário
+
+  }
 });

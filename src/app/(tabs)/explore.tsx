@@ -1,35 +1,32 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Button } from 'react-native';
-import { useNavigation  } from '@react-navigation/native';
+import { View, StyleSheet, Text } from 'react-native';
+import { Link } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { RootStackParamList } from '../App';
-import { NativeStackNavigationProp } from 'react-native-screens/lib/typescript/native-stack/types';
-import App from '../App';
 
-type ExploreScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Explore'>;
 
-export default function ExploreScreen({navigation}: any) {
+export default function ExploreScreen() {
   const [custoDeVida, setCustoDeVida] = useState(0);
   const [valorInvestimento, setValorInvestimento] = useState(0);
 
   const valorLivre = 3355 - custoDeVida - valorInvestimento;
 
-  //const navigation = useNavigation<ExploreScreenNavigationProp>();
-
   return (
     <View style={styles.container}>
       <View style={styles.component}>
         <Text style={styles.title}>Custo de Vida Mensal</Text>
-        {/* <TouchableOpacity style={styles.chevronRight} onPress={() => navigation.navigate('CustoDeVida')}>
-          <Icon name="chevron-right" size={30} color="#000" />
-        </TouchableOpacity> */}
-        <Button title = 'Ver mais' onPress={() => navigation.navigate("CustoDeVida")}/>
+        <View style={styles.chevronRightContainer}>
+          <Link href="/screens/CustoDeVidaScreen" style={styles.chevronRight}>
+            <Icon name="chevron-right" size={30} color="#000" />
+          </Link>
+        </View>
       </View>
       <View style={styles.component}>
         <Text style={styles.title}>Valores para Investimentos</Text>
-        <TouchableOpacity style={styles.chevronRight} onPress={() => navigation.navigate("Investimento")}>
-          <Icon name="chevron-right" size={30} color="#000" />
-        </TouchableOpacity>
+        <View style={styles.chevronRightContainer}>
+          <Link href="/screens/InvestimentosScreen" style={styles.chevronRight}>
+            <Icon name="chevron-right" size={30} color="#000" />
+          </Link>
+        </View>
       </View>
       <View style={styles.component}>
         <Text style={styles.title}>Valor livre</Text>
@@ -43,9 +40,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    paddingTop: 50,
-    margin: 20
+    backgroundColor: '#fff',
+    padding: 30,
   },
   title: {
     fontSize: 18,
@@ -58,11 +54,15 @@ const styles = StyleSheet.create({
     height: '30%',
     backgroundColor: '#ddd',
     borderRadius: 10,
+    marginTop: 30,
+  },
+  chevronRightContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    flex: 1,
+    marginTop: 50,
   },
   chevronRight: {
-    marginTop: 50,
-    alignItems: 'flex-end',
     padding: 10,
-
   },
 });
