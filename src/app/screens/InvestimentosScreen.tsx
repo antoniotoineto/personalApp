@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
   },
   chevronLeftContainer: {
     position: 'absolute',
-    top: 70, // Ajuste a distância do topo conforme necessário
-    left: 30, // Ajuste a distância da esquerda conforme necessário
+    top: 70,
+    left: 30,
 
   }
 });
