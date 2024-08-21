@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Button } from 'react-native';
 import { Link } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useCustoDeVida } from '../context/CustoDeVidaContext';
 
 export default function CustoDeVidaScreen() {
@@ -51,9 +52,14 @@ export default function CustoDeVidaScreen() {
               onChangeText={setInputValue}
               keyboardType="numeric"
             />
-            <TouchableOpacity onPress={() => handleSave()} style={styles.saveButton}>
-              <Icon name="check" size={20} color="#000" />
-            </TouchableOpacity>
+            <View style={styles.confirmButtonsContainer}>
+              <TouchableOpacity onPress={() => handleSave()} style={styles.confirmOrCancelButton}>
+                <Icon name="check" size={20} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setIsEditing(false)} style={styles.confirmOrCancelButton}>
+                <MaterialIcons name="cancel" size={20} color="black" />
+              </TouchableOpacity>
+            </View>
           </>
         ) : (
           <View style={styles.displayContainer}>
@@ -63,6 +69,12 @@ export default function CustoDeVidaScreen() {
             </TouchableOpacity>
           </View>
         )}
+        <View style={styles.addDebit}>
+          <Link href='/screens/DebitoScreen'>
+            <Text style={styles.debitText}>Adicionar débito</Text>
+          </Link>
+        </View>
+
       </View>
     </View>
   );
@@ -121,12 +133,27 @@ const styles = StyleSheet.create({
   contentContainer: {
     alignItems: 'center',
     width: '90%',
+    position: 'absolute',
   },
-  saveButton: {
+  confirmOrCancelButton: {
     marginLeft: 30,
     backgroundColor: '#dedede',
     padding: 8,
     borderRadius: 50,
   },
+  confirmButtonsContainer: {
+    flexDirection: 'row',
+    marginRight: 30
+  },
+  addDebit: {
+    backgroundColor: '#dcfaf8',
+    padding: 25,
+    borderRadius: 10,
+    marginTop: 10
+  },
+  debitText:{
+    fontSize: 18,
+    fontWeight: 'bold',
+  }
 
 });
