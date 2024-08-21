@@ -3,10 +3,12 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Link } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useCustoDeVida } from '../context/CustoDeVidaContext';
+import { useInvestimentos } from '../context/InvestimentosContext';
 
 
 export default function ExploreScreen() {
   const { custoDeVida } = useCustoDeVida();
+  const { investimentos } = useInvestimentos();
   const valorInvestimento = 0; // Defina o valor conforme necessário
   const valorLivre = 3355 - custoDeVida - valorInvestimento;
 
@@ -24,6 +26,7 @@ export default function ExploreScreen() {
       <View style={[styles.component, { backgroundColor: '#f9fcb6' }]}>
         <Text style={styles.title}>Valores para Investimentos</Text>
         <View style={styles.contentContainer}>
+        <Text style={styles.componentValue}>R$ {investimentos.toFixed(2)}</Text>
           <Link href="/screens/InvestimentosScreen" style={styles.chevronRight}>
             <Icon name="chevron-right" size={30} color="#000" />
           </Link>

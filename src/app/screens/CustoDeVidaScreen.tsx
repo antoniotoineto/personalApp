@@ -11,7 +11,7 @@ export default function CustoDeVidaScreen() {
   const [inputValue, setInputValue] = useState<string>(custoDeVida.toString());
 
   const handleSave = () => {
-    Alert.alert("Tem certeza que deseja editar o Custo de Vida?", "", [
+    Alert.alert("Tem certeza que deseja editar o 'Custo de Vida'?", "", [
       {
         text: "Cancelar",
         style: "cancel",
@@ -19,7 +19,8 @@ export default function CustoDeVidaScreen() {
       {
         text: "Sim",
         onPress: () => {
-          const value = parseFloat(inputValue);
+          const inputValueWithDot = inputValue.replace(',', '.');
+          const value = parseFloat(inputValueWithDot);
           if (!isNaN(value)) {
             setCustoDeVida(value);
             setIsEditing(false);
