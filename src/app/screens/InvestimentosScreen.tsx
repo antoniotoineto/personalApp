@@ -13,7 +13,7 @@ const CustoDeVidaScreen = () => {
       setValue={setInvestimentos}
       historyKey='@investimentosHistory'
       titleColor='#f9fcb6'
-      buttonColor='#fefaac'
+      buttonColor='#f9fcb6'
     />
   );
 };

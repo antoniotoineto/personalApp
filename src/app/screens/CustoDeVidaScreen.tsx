@@ -13,7 +13,7 @@ const CustoDeVidaScreen = () => {
       setValue={setCustoDeVida}
       historyKey='@custoDeVidaHistory'
       titleColor='#b6fce8'
-      buttonColor='#dcfaf8'
+      buttonColor='#b6fce8'
     />
   );
 };

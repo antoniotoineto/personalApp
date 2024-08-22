@@ -13,7 +13,7 @@ const ValorLivreScreen = () => {
       setValue={setValorLivre}
       historyKey='@valorLivreHistory'
       titleColor='#fccdb6'
-      buttonColor='#fcd6bb'
+      buttonColor='#fccdb6'
     />
   );
 };

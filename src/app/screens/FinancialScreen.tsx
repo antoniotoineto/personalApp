@@ -100,6 +100,7 @@ export default function FinancialScreen({
 
   return (
     <View style={styles.container}>
+      <View style={styles.topBar}></View>
       <View style={[styles.titleContainer, {backgroundColor: titleColor}]}>
         <Link href="/(tabs)/explore" style={styles.chevronLeft}>
           <Icon name="chevron-left" size={30} color="#000" />
@@ -180,11 +181,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff'
   },
+  topBar: {
+    position: 'absolute',
+    top: '0%',
+    height: 52,
+    backgroundColor: 'black',
+    width: '100%',
+  },
   titleContainer: {
     position: 'absolute',
     flexDirection: 'row',
     alignItems: 'center',
-    top: '8%',
+    top: '6%',
     padding: 30,
     paddingBottom: 10,
     width: '100%'
@@ -219,7 +227,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     position: 'absolute',
-    top: '25%',
+    top: '24%',
     alignItems: 'center',
     width: '90%',
     justifyContent: 'center',
