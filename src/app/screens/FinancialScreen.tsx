@@ -36,6 +36,10 @@ export default function FinancialScreen({
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>(getValue().toString());
 
+  const calculateTotal = () => {
+    return history.reduce((total, item) => total + item.valor, 0);
+  };
+
   useFocusEffect(
     React.useCallback(() => {
     const loadHistory = async () => {
@@ -48,6 +52,7 @@ export default function FinancialScreen({
         console.error('Erro ao carregar o histórico:', e);
       }
     };
+    setInputValue(getValue().toString());
     loadHistory();
   }, []));
 
@@ -85,7 +90,9 @@ export default function FinancialScreen({
           onPress: () => {
             const itemToDelete = history[index];
             if(itemToDelete){
-              setValue(getValue() + itemToDelete.valor);
+              const newValue = getValue() + itemToDelete.valor;
+              setValue(newValue);
+              setInputValue(newValue.toString());
             }
             
             const updatedHistory = history.filter((_, i) => i !== index);
@@ -154,12 +161,15 @@ export default function FinancialScreen({
           <Text style={styles.debitText}>Adicionar débito</Text>
         </Link>
       </View>
-      <Text style={styles.titleHistory}>Histórico</Text>
+      <View style={styles.middleContainer}>
+        <Text style={styles.titleHistory}>Histórico</Text>
+        <Text style={styles.totalSum}>Total: R$ {calculateTotal()}</Text>
+      </View>
       <View style={styles.history}>
         <ScrollView>
           {history.map((entry: any, index) => (
             <View key={index} style={styles.historyItem}>
-              <Text style={styles.historyDescription}>{entry.descricao}</Text>
+              <Text style={styles.historyDescription}>{entry.description}</Text>
               <Text style={styles.historyValue}>- R${entry.valor.toFixed(2)}</Text>
               <TouchableOpacity onPress={() => handleDeleteItem(index)} style={styles.deleteButton}>
                 <Icon name="trash" size={20} color="#979c98" />
@@ -260,6 +270,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  middleContainer:{
+    flexDirection: 'row',
+    width: '100%',
+  },
+  titleHistory: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+    paddingStart: 50,
+    paddingTop: 50
+  },
+  totalSum: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'flex-end',
+    paddingTop: 50,
+    marginLeft: '24%'
+  },
   history: {
     position: 'absolute',
     top: '55%',
@@ -268,13 +296,6 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 15,
     padding: 15
-  },
-  titleHistory: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    alignSelf: 'flex-start',
-    paddingStart: 50,
-    paddingTop: 50
   },
   historyItem: {
     padding: 10,
