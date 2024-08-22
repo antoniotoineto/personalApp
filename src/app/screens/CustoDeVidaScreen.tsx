@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Button, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -29,54 +29,71 @@ export default function CustoDeVidaScreen() {
       },
       },
     ]);
-
-    
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.chevronLeftContainer}>
-        <Link href='/(tabs)/explore'>
+      <View style={styles.titleContainer}>
+        <Link href="/(tabs)/explore" style={styles.chevronLeft}>
           <Icon name="chevron-left" size={30} color="#000" />
         </Link>
-      </View>
-      <View style={styles.titleContainer}>
         <Text style={styles.text}>Custo de Vida</Text>
       </View>
+      
       <View style={styles.contentContainer}>
-        {isEditing ? (
-          <>
+        <View style={styles.valueContainer}>
+          {isEditing ? (
             <TextInput
               style={styles.input}
               value={inputValue}
               onChangeText={setInputValue}
               keyboardType="numeric"
             />
-            <View style={styles.confirmButtonsContainer}>
-              <TouchableOpacity onPress={() => handleSave()} style={styles.confirmOrCancelButton}>
-                <Icon name="check" size={20} color="#000" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setIsEditing(false)} style={styles.confirmOrCancelButton}>
-                <MaterialIcons name="cancel" size={20} color="black" />
-              </TouchableOpacity>
-            </View>
-          </>
-        ) : (
-          <View style={styles.displayContainer}>
+          ) : (
             <Text style={styles.value}>{custoDeVida.toFixed(2)}</Text>
-            <TouchableOpacity onPress={() => setIsEditing(true)} style={styles.editButton}>
-              <Icon name="pencil" size={20} color="#000" />
+          )}
+
+          {!isEditing && (
+            <TouchableOpacity 
+            onPress={() => setIsEditing(!isEditing)} 
+            style={styles.editButton}
+            >
+            <Icon name={"pencil"} size={20} color="#000" />
+          </TouchableOpacity>
+          )}
+          
+        </View>
+
+        {isEditing && (
+          <View style={styles.confirmButtonsContainer}>
+            <TouchableOpacity 
+              onPress={() => handleSave()} 
+              style={styles.confirmOrCancelButton}
+            >
+              <Icon name="check" size={20} color="#000" />
+            </TouchableOpacity>
+            <TouchableOpacity 
+              onPress={() => setIsEditing(false)} 
+              style={styles.confirmOrCancelButton}
+            >
+              <MaterialIcons name="cancel" size={20} color="black" />
             </TouchableOpacity>
           </View>
         )}
-        <View style={styles.addDebit}>
-          <Link href='/screens/DebitoScreen'>
-            <Text style={styles.debitText}>Adicionar débito</Text>
-          </Link>
-        </View>
+      </View>
+      <View style={styles.addDebit}>
+        <Link href={{ pathname: "/screens/DebitoScreen", params: { context: 'custoDeVida' } }}>
+          <Text style={styles.debitText}>Adicionar débito</Text>
+        </Link>
+      </View>
+      <Text style={styles.titleHistory}>Histórico</Text>
+      <View style={styles.history}>
+        <ScrollView>
 
+        </ScrollView>
       </View>
     </View>
+
   );
 }
 
@@ -89,30 +106,26 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     position: 'absolute',
-    top: '18%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    top: '8%',
     backgroundColor: '#b6fce8',
     padding: 30,
     paddingBottom: 10,
-    borderRadius: 20,
-    borderWidth: 1,
+    width: '100%'
   },
   text: {
     fontSize: 35,
     fontWeight: 'bold',
     marginBottom: 20,
-  },
-  displayContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: '50%',
+    marginLeft: '20%'
   },
   value: {
     fontSize: 50,
     fontWeight: 'bold',
   },
-  chevronLeftContainer: {
+  chevronLeft: {
     position: 'absolute',
-    top: 70, 
     left: 30, 
   },
   input: {
@@ -120,7 +133,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     width: '60%',
-    marginBottom: 20,
     paddingHorizontal: 10,
     fontSize: 40,
   },
@@ -131,9 +143,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   contentContainer: {
+    position: 'absolute',
+    top: '25%',
     alignItems: 'center',
     width: '90%',
-    position: 'absolute',
+    justifyContent: 'center',
+  },
+  valueContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',  // Isso ajuda a manter o alinhamento no centro
+    marginBottom: 8, 
   },
   confirmOrCancelButton: {
     marginLeft: 30,
@@ -146,14 +166,33 @@ const styles = StyleSheet.create({
     marginRight: 30
   },
   addDebit: {
+    position: 'absolute',
+    top: '31.5%',
     backgroundColor: '#dcfaf8',
     padding: 25,
-    borderRadius: 10,
-    marginTop: 10
+    borderRadius: 30,
+    marginTop: 60,
+    borderWidth: 1.2,
   },
   debitText:{
     fontSize: 18,
     fontWeight: 'bold',
-  }
+  },
+  history: {
+    position: 'absolute',
+    top: '55%',
+    backgroundColor: '#dbdbdb',
+    width: '80%',
+    height: 300,
+    borderRadius: 15,
+    padding: 15
+  },
+  titleHistory: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+    paddingStart: 50,
+    paddingTop: 50
+  },
 
 });
