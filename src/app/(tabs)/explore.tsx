@@ -4,13 +4,13 @@ import { Link } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useCustoDeVida } from '../context/CustoDeVidaContext';
 import { useInvestimentos } from '../context/InvestimentosContext';
+import { useValorLivre } from '../context/ValorLivreContext';
 
 
 export default function ExploreScreen() {
   const { custoDeVida } = useCustoDeVida();
   const { investimentos } = useInvestimentos();
-  const valorInvestimento = 0; // Defina o valor conforme necessário
-  const valorLivre = 3355 - custoDeVida - valorInvestimento;
+  const { valorLivre } = useValorLivre();
 
   return (
     <View style={styles.container}>
@@ -26,14 +26,20 @@ export default function ExploreScreen() {
       <View style={[styles.component, { backgroundColor: '#f9fcb6' }]}>
         <Text style={styles.title}>Valores para Investimentos</Text>
         <View style={styles.contentContainer}>
-        <Text style={styles.componentValue}>R$ {investimentos.toFixed(2)}</Text>
+          <Text style={styles.componentValue}>R$ {investimentos.toFixed(2)}</Text>
           <Link href="/screens/InvestimentosScreen" style={styles.chevronRight}>
             <Icon name="chevron-right" size={30} color="#000" />
           </Link>
         </View>
       </View>
       <View style={[styles.component, { backgroundColor: '#fccdb6' }]}>
-        <Text style={styles.title}>Valor livre</Text>
+        <Text style={styles.title}>Valor Livre</Text>
+        <View style={styles.contentContainer}>
+          <Text style={styles.componentValue}>R$ {valorLivre.toFixed(2)}</Text>
+          <Link href="/screens/ValorLivreScreen" style={styles.chevronRight}>
+            <Icon name="chevron-right" size={30} color="#000" />
+          </Link>
+        </View>
       </View>
     </View>
   );

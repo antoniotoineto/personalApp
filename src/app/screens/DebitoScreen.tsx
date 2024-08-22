@@ -1,40 +1,65 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router'; // useSearchParams para pegar o contexto passado
 import { useCustoDeVida } from '../context/CustoDeVidaContext';
+import { useInvestimentos } from '../context/InvestimentosContext';
+import { useValorLivre } from '../context/ValorLivreContext';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DebitoScreen() {
   const [debit, setDebit] = useState<string>('');
-  const [descricao, setDescricao] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const { custoDeVida, setCustoDeVida } = useCustoDeVida();
+  const {investimentos, setInvestimentos} = useInvestimentos();
+  const {valorLivre, setValorLivre} = useValorLivre();
 
   const router = useRouter();
-  const { context } = useLocalSearchParams(); // Pegando o parâmetro de contexto
-  const { custoDeVida, setCustoDeVida } = useCustoDeVida();  // Acessa o contexto do custo de vida
+  const { context } = useLocalSearchParams();
 
-  const handleConfirm = () => {
+  const saveHistory = async (key: string, debitValue: number) => {
+
+    const newDebitEntry = { valor: debitValue, description };
+    try {
+      const storedHistory = await AsyncStorage.getItem(key);
+      const history = storedHistory ? JSON.parse(storedHistory) : [];
+      history.push(newDebitEntry);
+      await AsyncStorage.setItem(key, JSON.stringify(history));
+      console.log("Dados do débito salvos em cache.");
+    } catch (e) {
+      console.error('Erro ao salvar no histórico:', e);
+    }
+
+  } 
+
+  const handleConfirm = async () => {
     const debitValueWithDot = debit.replace(',', '.');
-    const valorDebitado = parseFloat(debitValueWithDot);
+    const debitValue = parseFloat(debitValueWithDot);
     
-    if (!isNaN(valorDebitado) && valorDebitado > 0) {
+    if (!isNaN(debitValue) && debitValue > 0) {
       switch (context) {
         case 'custoDeVida':
-          setCustoDeVida(custoDeVida - valorDebitado);
+          setCustoDeVida(custoDeVida - debitValue);
+          saveHistory("@custoDeVidaHistory", debitValue);
           break;
-        // Adicione aqui casos para outros contextos como 'investimentos' ou 'valorLivre'
-        // case 'investimentos':
-        //   setInvestimentos(investimentos - valorDebitado);
-        //   break;
-        // case 'valorLivre':
-        //   setValorLivre(valorLivre - valorDebitado);
-        //   break;
+
+        case 'investimentos':
+          setInvestimentos(investimentos - debitValue);
+          saveHistory("@investimentosHistory", debitValue);
+          break;
+
+        case 'valorLivre':
+          setValorLivre(valorLivre - debitValue);
+          saveHistory("@valorLivreHistory", debitValue);
+          break;
+
         default:
           alert("Contexto desconhecido");
       }
       
-      router.back();  // Volta para a tela anterior
+      router.push('/(tabs)/explore');  // Volta para a tela anterior
     } else {
-      alert("Por favor, insira um valor válido.");
+      Alert.alert("Por favor, insira um valor válido.");
     }
   };
 
@@ -56,8 +81,8 @@ export default function DebitoScreen() {
       <TextInput
         placeholder="Descrição do débito"
         placeholderTextColor="#999999"
-        value={descricao}
-        onChangeText={setDescricao}
+        value={description}
+        onChangeText={setDescription}
         style={styles.input}
       />
       <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
