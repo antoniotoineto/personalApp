@@ -1,15 +1,15 @@
-# 📲 personalApp
+# 📲 Financial Control App
 
 ### Repository dedicated to a personal project: a smooth and interactive App to assist with personal financial spends.
 
-![App Demo GIF](path_to_your_gif_here.gif) <!-- Replace with the actual path of your GIF -->
+![App Demo GIF](./assets/gifPersonalApp.gif) <!-- Replace with the actual path of your GIF -->
 
 ---
 
 ## 🌐 Language Selection | Selecione o Idioma 
 
 [![English](https://img.shields.io/badge/Language-English-blue.svg)](#english) 
-[![Português](https://img.shields.io/badge/Idioma-Português-green.svg)](#pt)
+[![Português](https://img.shields.io/badge/Idioma-Português-green.svg)](#portuguese)
 
 ---
 <a name="english"></a>
@@ -18,7 +18,7 @@
 
 ### Context
 
-The idea for the app came from a personal need to better manage my finances. I had already tried using spreadsheets to do this, but I couldn't adapt to this method. Then, I searched for apps on the market, but all of them were too complex and filled with features I didn't need. I was looking for something simpler, more straightforward, and tailored to my financial reality, which led me to create **personalApp**.
+The idea for the app came from a personal need to better manage my finances. I had already tried using spreadsheets to do this, but I couldn't adapt to this method. Then, I searched for apps on the market, but all of them were too complex and filled with features I didn't need. I was looking for something simpler, more straightforward, and tailored to my financial reality, which led me to create this **App**.
 
 ### What does the app do?
 
@@ -35,7 +35,7 @@ The goal of **personalApp** is to be a practical, interactive, and easy-to-use t
 
 ### Contexto
 
-A ideia para o aplicativo surgiu a partir de uma necessidade pessoal de controlar melhor minhas finanças. Eu já havia tentado usar planilhas para fazer esse controle, mas não consegui me adaptar a esse método. Depois, procurei aplicativos no mercado, mas todos eles eram muito complexos e cheios de funcionalidades que eu não precisava. Eu buscava algo mais simples, direto e que fosse voltado para a minha realidade financeira, e foi aí que decidi criar o **personalApp**.
+A ideia para o aplicativo surgiu a partir de uma necessidade pessoal de controlar melhor minhas finanças. Eu já havia tentado usar planilhas para fazer esse controle, mas não consegui me adaptar a esse método. Depois, procurei aplicativos no mercado, mas todos eles eram muito complexos e cheios de funcionalidades que eu não precisava. Eu buscava algo mais simples, direto e que fosse voltado para a minha realidade financeira, e foi aí que decidi criar esse **Aplicativo**.
 
 ### O que o app faz?
 
