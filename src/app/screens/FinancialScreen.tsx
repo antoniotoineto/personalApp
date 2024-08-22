@@ -167,10 +167,13 @@ export default function FinancialScreen({
       </View>
       <View style={styles.history}>
         <ScrollView>
-          {history.map((entry: any, index) => (
+          {history.slice().reverse().map((entry: any, index) => (
             <View key={index} style={styles.historyItem}>
               <Text style={styles.historyDescription}>{entry.description}</Text>
-              <Text style={styles.historyValue}>- R${entry.valor.toFixed(2)}</Text>
+              <Text 
+                style={[styles.historyValue,  
+                      { color: debitContext === 'investimentos' ? 'green' : '#d9534f' }]}
+                >{debitContext === 'investimentos' ? "+" : "-"} R${entry.valor.toFixed(2)}</Text>
               <TouchableOpacity onPress={() => handleDeleteItem(index)} style={styles.deleteButton}>
                 <Icon name="trash" size={20} color="#979c98" />
               </TouchableOpacity>
@@ -308,11 +311,11 @@ const styles = StyleSheet.create({
   historyDescription: {
     fontSize: 16,
     color: '#333',
-    flex: 1, // Permite que a descrição ocupe o espaço disponível
+    flex: 1,
   },
   historyValue: {
     fontSize: 16,
-    color: '#d9534f', // Cor para valores negativos
+    color: '#d9534f', 
     fontWeight: 'bold',
   },
   deleteButton: {
