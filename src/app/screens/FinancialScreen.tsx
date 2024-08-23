@@ -40,6 +40,15 @@ export default function FinancialScreen({
     return history.reduce((total, item) => total + item.valor, 0);
   };
 
+  const toggleNegativeSign = () => {
+    if (inputValue.startsWith('-')) {
+      setInputValue(inputValue.slice(1));  // Remove o sinal de menos
+    } else {
+      setInputValue('-' + inputValue);  // Adiciona o sinal de menos
+    }
+  };
+  
+
   useFocusEffect(
     React.useCallback(() => {
     const loadHistory = async () => {
@@ -119,12 +128,17 @@ export default function FinancialScreen({
       <View style={styles.contentContainer}>
         <View style={styles.valueContainer}>
           {isEditing ? (
-            <TextInput
-              style={styles.input}
-              value={inputValue}
-              onChangeText={setInputValue}
-              keyboardType="numeric"
-            />
+            <View style={styles.inputContainer}>
+              <TouchableOpacity onPress={() => toggleNegativeSign()}>
+                <Text style={styles.minusButton}>-</Text>
+              </TouchableOpacity>
+              <TextInput
+                style={styles.input}
+                value={inputValue}
+                onChangeText={setInputValue}
+                keyboardType="numeric"
+              />
+            </View>
           ) : (
             <Text style={styles.value}>{getValue().toFixed(2)}</Text>
           )}
@@ -226,11 +240,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 30, 
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  minusButton: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginRight: 10,
+  },
   input: {
     borderColor: 'gray',
     borderRadius: 10,
     borderWidth: 1,
-    width: '60%',
+    width: '80%',
     paddingHorizontal: 10,
     fontSize: 40,
   },
