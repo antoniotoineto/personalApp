@@ -40,15 +40,6 @@ export default function FinancialScreen({
     return history.reduce((total, item) => total + item.valor, 0);
   };
 
-  const toggleNegativeSign = () => {
-    if (inputValue.startsWith('-')) {
-      setInputValue(inputValue.slice(1));  // Remove o sinal de menos
-    } else {
-      setInputValue('-' + inputValue);  // Adiciona o sinal de menos
-    }
-  };
-  
-
   useFocusEffect(
     React.useCallback(() => {
     const loadHistory = async () => {
@@ -64,26 +55,6 @@ export default function FinancialScreen({
     setInputValue(getValue().toString());
     loadHistory();
   }, []));
-
-  const handleSave = () => {
-    Alert.alert("Editar item", `Tem certeza que deseja editar o ${title}?`, [
-      {
-        text: "Cancelar",
-        style: "cancel",
-      },
-      {
-        text: "Sim",
-        onPress: () => {
-          const inputValueWithDot = inputValue.replace(',', '.');
-          const value = parseFloat(inputValueWithDot);
-          if (!isNaN(value)) {
-            setValue(value);
-            setIsEditing(false);
-          }
-      },
-      },
-    ]);
-  };
 
   const handleDeleteItem = (index: number) => {
     Alert.alert(
@@ -127,50 +98,10 @@ export default function FinancialScreen({
       
       <View style={styles.contentContainer}>
         <View style={styles.valueContainer}>
-          {isEditing ? (
-            <View style={styles.inputContainer}>
-              <TouchableOpacity onPress={() => toggleNegativeSign()}>
-                <Text style={styles.minusButton}>-</Text>
-              </TouchableOpacity>
-              <TextInput
-                style={styles.input}
-                value={inputValue}
-                onChangeText={setInputValue}
-                keyboardType="numeric"
-              />
-            </View>
-          ) : (
-            <Text style={styles.value}>{getValue().toFixed(2)}</Text>
-          )}
-
-          {!isEditing && (
-            <TouchableOpacity 
-            onPress={() => setIsEditing(!isEditing)} 
-            style={styles.editButton}
-            >
-            <Icon name={"pencil"} size={20} color="#000" />
-          </TouchableOpacity>
-          )}
-          
+          <Text style={styles.value}>{getValue().toFixed(2)}</Text>   
         </View>
-
-        {isEditing && (
-          <View style={styles.confirmButtonsContainer}>
-            <TouchableOpacity 
-              onPress={() => handleSave()} 
-              style={styles.confirmOrCancelButton}
-            >
-              <Icon name="check" size={20} color="#000" />
-            </TouchableOpacity>
-            <TouchableOpacity 
-              onPress={() => setIsEditing(false)} 
-              style={styles.confirmOrCancelButton}
-            >
-              <MaterialIcons name="cancel" size={20} color="black" />
-            </TouchableOpacity>
-          </View>
-        )}
       </View>
+      
       <View style={[styles.addDebit, {backgroundColor: buttonColor}]}>
         <Link href={{ pathname: "/screens/DebitoScreen", params: { context: debitContext} }}>
           <Text style={styles.debitText}>Adicionar débito</Text>
