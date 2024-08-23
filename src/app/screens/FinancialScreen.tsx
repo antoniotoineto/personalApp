@@ -88,14 +88,15 @@ export default function FinancialScreen({
         {
           text: "Excluir",
           onPress: () => {
-            const itemToDelete = history[index];
+            const uninvertedIndex = history.length - 1 - index;
+            const itemToDelete = history[uninvertedIndex];
             if(itemToDelete){
               const newValue = getValue() + itemToDelete.valor;
               setValue(newValue);
               setInputValue(newValue.toString());
             }
             
-            const updatedHistory = history.filter((_, i) => i !== index);
+            const updatedHistory = history.filter((_, i) => i !== uninvertedIndex);
             setHistory(updatedHistory);
 
             AsyncStorage.setItem(historyKey, JSON.stringify(updatedHistory));
@@ -168,6 +169,7 @@ export default function FinancialScreen({
       <View style={styles.history}>
         <ScrollView>
           {history.slice().reverse().map((entry: any, index) => (
+            
             <View key={index} style={styles.historyItem}>
               <Text style={styles.historyDescription}>{entry.description}</Text>
               <Text 
@@ -276,6 +278,7 @@ const styles = StyleSheet.create({
   middleContainer:{
     flexDirection: 'row',
     width: '100%',
+    justifyContent: 'space-between',
   },
   titleHistory: {
     fontSize: 20,
@@ -288,8 +291,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     alignSelf: 'flex-end',
-    paddingTop: 50,
-    marginLeft: '24%'
+    paddingEnd: '13%'
   },
   history: {
     position: 'absolute',

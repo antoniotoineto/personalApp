@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Modal, ActivityIndicator } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router'; // useSearchParams para pegar o contexto passado
 import { useCustoDeVida } from '../context/CustoDeVidaContext';
 import { useInvestimentos } from '../context/InvestimentosContext';
 import { useValorLivre } from '../context/ValorLivreContext';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LottieView from 'lottie-react-native';
 
 export default function DebitoScreen() {
   const [debit, setDebit] = useState<string>('');
@@ -13,6 +14,7 @@ export default function DebitoScreen() {
   const { custoDeVida, setCustoDeVida } = useCustoDeVida();
   const {investimentos, setInvestimentos} = useInvestimentos();
   const {valorLivre, setValorLivre} = useValorLivre();
+  const [isLoading, setIsLoading] = useState(false); 
 
   const router = useRouter();
   const { context } = useLocalSearchParams();
@@ -57,7 +59,12 @@ export default function DebitoScreen() {
           alert("Contexto desconhecido");
       }
       
-      router.push('/(tabs)/explore');  // Volta para a tela anterior
+      setIsLoading(true);
+
+      setTimeout(() => {
+        setIsLoading(false);
+        router.push('/(tabs)/explore');
+      }, 1500);  
     } else {
       Alert.alert("Por favor, insira um valor válido.");
     }
@@ -68,6 +75,24 @@ export default function DebitoScreen() {
       <TouchableOpacity style={styles.chevronLeft} onPress={() => router.back()}>
         <Icon name="chevron-left" size={30} color="#000" />
       </TouchableOpacity>
+
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={isLoading}
+        onRequestClose={() => setIsLoading(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+          <LottieView
+            source={require('../../assets/gifs/Check.json')} // Certifique-se de ter o arquivo JSON do Lottie no caminho correto
+            autoPlay
+            loop
+            style={styles.animation}
+          />
+          </View>
+        </View>
+      </Modal>
 
       <Text style={styles.title}>Registrar Débito</Text>
       <TextInput
@@ -131,5 +156,22 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',  // Fundo translúcido
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  animation: {
+    width: 150,
+    height: 150,
   },
 });
