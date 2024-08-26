@@ -5,23 +5,27 @@ import { useCustoDeVida } from '../context/CustoDeVidaContext';
 import { useInvestimentos } from '../context/InvestimentosContext';
 import { useValorLivre } from '../context/ValorLivreContext';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LottieView from 'lottie-react-native';
 
 export default function DebitoScreen() {
   const [debit, setDebit] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [signal, setSignal] = useState<string>('');
   const { custoDeVida, setCustoDeVida } = useCustoDeVida();
   const {investimentos, setInvestimentos} = useInvestimentos();
   const {valorLivre, setValorLivre} = useValorLivre();
   const [isLoading, setIsLoading] = useState(false); 
+  const [isAdding, setIsAdding] = useState(false);
 
   const router = useRouter();
   const { context } = useLocalSearchParams();
 
-  const saveHistory = async (key: string, debitValue: number) => {
+  const saveHistory = async (key: string, debitValue: number, signal: string) => {
 
-    const newDebitEntry = { valor: debitValue, description };
+    const newDebitEntry = { valor: debitValue, description: description, sinal: signal };
+    console.log(newDebitEntry);
     try {
       const storedHistory = await AsyncStorage.getItem(key);
       const history = storedHistory ? JSON.parse(storedHistory) : [];
@@ -41,19 +45,37 @@ export default function DebitoScreen() {
     if (!isNaN(debitValue) && debitValue > 0) {
       switch (context) {
         case 'custoDeVida':
-          setCustoDeVida(custoDeVida - debitValue);
-          saveHistory("@custoDeVidaHistory", debitValue);
-          break;
+          if(!isAdding){
+            setCustoDeVida(custoDeVida - debitValue);
+            saveHistory("@custoDeVidaHistory", debitValue, "-");
+            break;
+          } else {
+            setCustoDeVida(custoDeVida + debitValue);
+            saveHistory("@custoDeVidaHistory", debitValue, "+");
+            break;
+          }
 
         case 'investimentos':
-          setInvestimentos(investimentos - debitValue);
-          saveHistory("@investimentosHistory", debitValue);
-          break;
+          if(!isAdding){
+            setInvestimentos(investimentos - debitValue);
+            saveHistory("@investimentosHistory", debitValue, "-");
+            break;
+          } else {
+            setInvestimentos(investimentos + debitValue);
+            saveHistory("@investimentosHistory", debitValue, "+");
+            break;
+          }
 
-        case 'valorLivre':
-          setValorLivre(valorLivre - debitValue);
-          saveHistory("@valorLivreHistory", debitValue);
-          break;
+          case 'valorLivre':
+            if(!isAdding){
+              setValorLivre(valorLivre - debitValue);
+              saveHistory("@valorLivreHistory", debitValue, "-");
+              break;
+            } else {
+              setValorLivre(valorLivre + debitValue);
+              saveHistory("@valorLivreHistory", debitValue, "+");
+              break;
+            }
 
         default:
           alert("Contexto desconhecido");
@@ -110,6 +132,31 @@ export default function DebitoScreen() {
         onChangeText={setDescription}
         style={styles.input}
       />
+      <View style={styles.checkboxContainer}>
+        <TouchableOpacity 
+          style={styles.checkboxItem}
+          onPress={() => setIsAdding(true)}
+        >
+          <Ionicons
+            name={isAdding ? "checkbox" : "square-outline"}
+            size={24}
+            color={isAdding ? "#4CAF50" : "gray"}
+          />
+          <Text style={styles.checkboxLabel}>Adicionar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.checkboxItem}
+          onPress={() => setIsAdding(false)}
+        >
+          <Ionicons
+            name={!isAdding ? "checkbox" : "square-outline"}
+            size={24}
+            color={!isAdding ? "#d9534f" : "gray"}
+          />
+          <Text style={styles.checkboxLabel}>Retirar</Text>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
         <Text style={styles.buttonText}>Confirmar</Text>
       </TouchableOpacity>
@@ -145,6 +192,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
     backgroundColor: '#dbdbdb'
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginBottom: 20,
+  },
+  checkboxItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  checkboxLabel: {
+    marginLeft: 10,
+    fontSize: 18,
   },
   confirmButton: {
     backgroundColor: '#4CAF50',
