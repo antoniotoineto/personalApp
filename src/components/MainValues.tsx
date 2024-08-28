@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 interface MainValuesProps {
     title: string;
@@ -49,58 +50,60 @@ export default function MainValuesScreen ({
     };
   
     return (
-        <View style={styles.container}>
-            
-            <View style={[styles.titleContainer, {backgroundColor: titleColor}]}>
-                <Text style={styles.title}>{title}</Text>
-            </View>
-            <View style={styles.componentContainer}>
-                <View style={styles.valueContainer}>
-                    {isEditing ? (
-                        <View style={styles.inputContainer}>
-                            <TouchableOpacity onPress={() => toggleNegativeSign()}>
-                                <Text style={styles.minusButton}>-</Text>
-                            </TouchableOpacity>
-                            <TextInput
-                            style={styles.input}
-                            value={inputValue}
-                            onChangeText={setInputValue}
-                            keyboardType="numeric"
-                            />
-                        </View>
-                    ) : (
-                        <Text style={styles.value}>{getValue().toFixed(2)}</Text>
-                    )}
-        
-                    {!isEditing && (
-                        <TouchableOpacity 
-                        onPress={() => setIsEditing(!isEditing)} 
-                        style={styles.editButton}
-                        >
-                            <Icon name={"pencil"} size={20} color="#000" />
-                        </TouchableOpacity>
-                    )}
-                    
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View style={styles.container}>
+                
+                <View style={[styles.titleContainer, {backgroundColor: titleColor}]}>
+                    <Text style={styles.title}>{title}</Text>
                 </View>
-    
-                {isEditing && (
-                    <View style={styles.confirmButtonsContainer}>
-                        <TouchableOpacity 
-                            onPress={() => handleSave()} 
-                            style={styles.confirmOrCancelButton}
-                        >
-                            <Icon name="check" size={20} color="#000" />
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            onPress={() => setIsEditing(false)} 
-                            style={styles.confirmOrCancelButton}
-                        >
-                            <MaterialIcons name="cancel" size={20} color="black" />
-                        </TouchableOpacity>
+                <View style={styles.componentContainer}>
+                    <View style={styles.valueContainer}>
+                        {isEditing ? (
+                            <View style={styles.inputContainer}>
+                                <TouchableOpacity onPress={() => toggleNegativeSign()}>
+                                    <Text style={styles.minusButton}>-</Text>
+                                </TouchableOpacity>
+                                <TextInput
+                                style={styles.input}
+                                value={inputValue}
+                                onChangeText={setInputValue}
+                                keyboardType="numeric"
+                                />
+                            </View>
+                        ) : (
+                            <Text style={styles.value}>{getValue().toFixed(2)}</Text>
+                        )}
+            
+                        {!isEditing && (
+                            <TouchableOpacity 
+                            onPress={() => setIsEditing(!isEditing)} 
+                            style={styles.editButton}
+                            >
+                                <Icon name={"pencil"} size={20} color="#000" />
+                            </TouchableOpacity>
+                        )}
+                        
                     </View>
-                )}
+        
+                    {isEditing && (
+                        <View style={styles.confirmButtonsContainer}>
+                            <TouchableOpacity 
+                                onPress={() => handleSave()} 
+                                style={styles.confirmOrCancelButton}
+                            >
+                                <Icon name="check" size={20} color="#000" />
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                                onPress={() => setIsEditing(false)} 
+                                style={styles.confirmOrCancelButton}
+                            >
+                                <MaterialIcons name="cancel" size={20} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 

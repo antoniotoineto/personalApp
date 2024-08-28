@@ -22,7 +22,7 @@ export default function DebitoScreen() {
   const router = useRouter();
   const { context } = useLocalSearchParams();
 
-  const saveHistory = async (key: string, debitValue: number, signal: string) => {
+  const saveHistory = async (key: string, debitValue: number) => {
 
     const newDebitEntry = { valor: debitValue, description: description, sinal: signal };
     console.log(newDebitEntry);
@@ -40,40 +40,44 @@ export default function DebitoScreen() {
 
   const handleConfirm = async () => {
     const debitValueWithDot = debit.replace(',', '.');
-    const debitValue = parseFloat(debitValueWithDot);
+    let debitValue = parseFloat(debitValueWithDot);
+
+    if (!isAdding) {
+      debitValue = -debitValue;
+    }
     
     if (!isNaN(debitValue) && debitValue > 0) {
       switch (context) {
         case 'custoDeVida':
           if(!isAdding){
             setCustoDeVida(custoDeVida - debitValue);
-            saveHistory("@custoDeVidaHistory", debitValue, "-");
+            saveHistory("@custoDeVidaHistory", debitValue);
             break;
           } else {
             setCustoDeVida(custoDeVida + debitValue);
-            saveHistory("@custoDeVidaHistory", debitValue, "+");
+            saveHistory("@custoDeVidaHistory", debitValue);
             break;
           }
 
         case 'investimentos':
           if(!isAdding){
             setInvestimentos(investimentos - debitValue);
-            saveHistory("@investimentosHistory", debitValue, "-");
+            saveHistory("@investimentosHistory", debitValue);
             break;
           } else {
             setInvestimentos(investimentos + debitValue);
-            saveHistory("@investimentosHistory", debitValue, "+");
+            saveHistory("@investimentosHistory", debitValue);
             break;
           }
 
           case 'valorLivre':
             if(!isAdding){
               setValorLivre(valorLivre - debitValue);
-              saveHistory("@valorLivreHistory", debitValue, "-");
+              saveHistory("@valorLivreHistory", debitValue);
               break;
             } else {
               setValorLivre(valorLivre + debitValue);
-              saveHistory("@valorLivreHistory", debitValue, "+");
+              saveHistory("@valorLivreHistory", debitValue);
               break;
             }
 
