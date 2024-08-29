@@ -24,7 +24,7 @@ export default function DebitoScreen() {
 
   const saveHistory = async (key: string, debitValue: number) => {
 
-    const newDebitEntry = { valor: debitValue, description: description, sinal: signal };
+    const newDebitEntry = { valor: debitValue, description: description};
     console.log(newDebitEntry);
     try {
       const storedHistory = await AsyncStorage.getItem(key);
@@ -46,40 +46,22 @@ export default function DebitoScreen() {
       debitValue = -debitValue;
     }
     
-    if (!isNaN(debitValue) && debitValue > 0) {
+    if (!isNaN(debitValue) && description !== '') {
       switch (context) {
         case 'custoDeVida':
-          if(!isAdding){
-            setCustoDeVida(custoDeVida - debitValue);
-            saveHistory("@custoDeVidaHistory", debitValue);
-            break;
-          } else {
-            setCustoDeVida(custoDeVida + debitValue);
-            saveHistory("@custoDeVidaHistory", debitValue);
-            break;
-          }
+          setCustoDeVida(custoDeVida + debitValue);
+          saveHistory("@custoDeVidaHistory", debitValue);
+          break;
 
         case 'investimentos':
-          if(!isAdding){
-            setInvestimentos(investimentos - debitValue);
-            saveHistory("@investimentosHistory", debitValue);
-            break;
-          } else {
-            setInvestimentos(investimentos + debitValue);
-            saveHistory("@investimentosHistory", debitValue);
-            break;
-          }
+          setInvestimentos(investimentos + debitValue);
+          saveHistory("@investimentosHistory", debitValue);
+          break;
 
-          case 'valorLivre':
-            if(!isAdding){
-              setValorLivre(valorLivre - debitValue);
-              saveHistory("@valorLivreHistory", debitValue);
-              break;
-            } else {
-              setValorLivre(valorLivre + debitValue);
-              saveHistory("@valorLivreHistory", debitValue);
-              break;
-            }
+        case 'valorLivre':
+          setValorLivre(valorLivre + debitValue);
+          saveHistory("@valorLivreHistory", debitValue);
+          break;
 
         default:
           alert("Contexto desconhecido");
@@ -92,7 +74,7 @@ export default function DebitoScreen() {
         router.push('/(tabs)/explore');
       }, 1500);  
     } else {
-      Alert.alert("Por favor, insira um valor válido.");
+      Alert.alert("Por favor, preencha os campos.");
     }
   };
 

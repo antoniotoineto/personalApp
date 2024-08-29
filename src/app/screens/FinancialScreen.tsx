@@ -71,7 +71,7 @@ export default function FinancialScreen({
             const uninvertedIndex = history.length - 1 - index;
             const itemToDelete = history[uninvertedIndex];
             if(itemToDelete){
-              const newValue = getValue() + itemToDelete.valor;
+              const newValue = getValue() - itemToDelete.valor;
               setValue(newValue);
               setInputValue(newValue.toString());
             }
@@ -119,7 +119,7 @@ export default function FinancialScreen({
               <Text style={styles.historyDescription}>{entry.description}</Text>
               <Text 
                 style={[styles.historyValue,  
-                      { color: debitContext === 'investimentos' || entry.sinal === '+' ? 'green' : '#d9534f' }]}
+                      { color: debitContext === 'investimentos' || entry.valor > 0 ? 'green' : '#d9534f' }]}
                 > R$ {entry.valor.toFixed(2)}</Text>
               <TouchableOpacity onPress={() => handleDeleteItem(index)} style={styles.deleteButton}>
                 <Icon name="trash" size={20} color="#979c98" />

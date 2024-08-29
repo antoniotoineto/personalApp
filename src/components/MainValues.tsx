@@ -43,9 +43,9 @@ export default function MainValuesScreen ({
     
     const toggleNegativeSign = () => {
       if (inputValue.startsWith('-')) {
-        setInputValue(inputValue.slice(1));  // Remove o sinal de menos
+        setInputValue(inputValue.slice(1));
       } else {
-        setInputValue('-' + inputValue);  // Adiciona o sinal de menos
+        setInputValue('-' + inputValue); 
       }
     };
   
