@@ -33,11 +33,10 @@ export default function FinancialScreen({
 }: FinancialScreenProps) {
 
   const [history, setHistory] = useState<HistoricoItem[]>([]);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>(getValue().toString());
 
   const calculateTotal = () => {
-    return history.reduce((total, item) => total + item.valor, 0);
+    return history.reduce((total, item) => item.valor < 0 ? total + item.valor : total + 0, 0);
   };
 
   useFocusEffect(
@@ -109,7 +108,7 @@ export default function FinancialScreen({
       </View>
       <View style={styles.middleContainer}>
         <Text style={styles.titleHistory}>Histórico</Text>
-        <Text style={styles.totalSum}>Total: R$ {calculateTotal()}</Text>
+        <Text style={styles.totalSum}>Gastos: R$ {calculateTotal()}</Text>
       </View>
       <View style={styles.history}>
         <ScrollView>
