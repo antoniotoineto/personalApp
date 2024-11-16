@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Button, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { useFocusEffect } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { useCustoDeVida } from '../context/CustoDeVidaContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface HistoricoItem {

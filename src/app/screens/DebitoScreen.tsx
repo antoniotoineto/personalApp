@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Modal, ActivityIndicator } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router'; // useSearchParams para pegar o contexto passado
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Modal } from 'react-native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useCustoDeVida } from '../context/CustoDeVidaContext';
 import { useInvestimentos } from '../context/InvestimentosContext';
 import { useValorLivre } from '../context/ValorLivreContext';
@@ -12,7 +12,6 @@ import LottieView from 'lottie-react-native';
 export default function DebitoScreen() {
   const [debit, setDebit] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [signal, setSignal] = useState<string>('');
   const { custoDeVida, setCustoDeVida } = useCustoDeVida();
   const {investimentos, setInvestimentos} = useInvestimentos();
   const {valorLivre, setValorLivre} = useValorLivre();

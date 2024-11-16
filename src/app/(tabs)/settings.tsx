@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useValorLivre } from '../context/ValorLivreContext';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { View, StyleSheet } from 'react-native';
 import { useCustoDeVida } from '../context/CustoDeVidaContext';
 import { useInvestimentos } from '../context/InvestimentosContext';
 import MainValuesScreen from '@/components/MainValues';
