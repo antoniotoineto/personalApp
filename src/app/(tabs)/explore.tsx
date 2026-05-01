@@ -2,9 +2,9 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Link } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useCustoDeVida } from '../context/CustoDeVidaContext';
-import { useInvestimentos } from '../context/InvestimentosContext';
-import { useValorLivre } from '../context/ValorLivreContext';
+import { useCustoDeVida } from '../../context/CustoDeVidaContext';
+import { useInvestimentos } from '../../context/InvestimentosContext';
+import { useValorLivre } from '../../context/ValorLivreContext';
 
 
 export default function ExploreScreen() {
@@ -18,7 +18,7 @@ export default function ExploreScreen() {
         <Text style={styles.title}>Custo de Vida Mensal</Text>
         <View style={styles.contentContainer}>
           <Text style={styles.componentValue}>R$ {custoDeVida.toFixed(2)}</Text>
-          <Link href="/screens/CustoDeVidaScreen" style={styles.chevronRight}>
+          <Link href="/custoDeVidaRoute" style={styles.chevronRight}>
             <Icon name="chevron-right" size={30} color="#000" />
           </Link>
         </View>
@@ -27,7 +27,7 @@ export default function ExploreScreen() {
         <Text style={styles.title}>Valores para Investimentos</Text>
         <View style={styles.contentContainer}>
           <Text style={styles.componentValue}>R$ {investimentos.toFixed(2)}</Text>
-          <Link href="/screens/InvestimentosScreen" style={styles.chevronRight}>
+          <Link href="/investimentosRoute" style={styles.chevronRight}>
             <Icon name="chevron-right" size={30} color="#000" />
           </Link>
         </View>
@@ -36,7 +36,7 @@ export default function ExploreScreen() {
         <Text style={styles.title}>Valor Livre</Text>
         <View style={styles.contentContainer}>
           <Text style={styles.componentValue}>R$ {valorLivre.toFixed(2)}</Text>
-          <Link href="/screens/ValorLivreScreen" style={styles.chevronRight}>
+          <Link href="/valorLivreRoute" style={styles.chevronRight}>
             <Icon name="chevron-right" size={30} color="#000" />
           </Link>
         </View>
