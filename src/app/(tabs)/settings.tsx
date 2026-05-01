@@ -1,8 +1,8 @@
 import React from 'react';
-import { useValorLivre } from '../context/ValorLivreContext';
+import { useValorLivre } from '../../context/ValorLivreContext';
 import { View, StyleSheet } from 'react-native';
-import { useCustoDeVida } from '../context/CustoDeVidaContext';
-import { useInvestimentos } from '../context/InvestimentosContext';
+import { useCustoDeVida } from '../../context/CustoDeVidaContext';
+import { useInvestimentos } from '../../context/InvestimentosContext';
 import MainValuesScreen from '@/components/MainValues';
 
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 import { useFocusEffect } from 'expo-router';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -39,19 +39,19 @@ export default function FinancialScreen({
 
   useFocusEffect(
     React.useCallback(() => {
-    const loadHistory = async () => {
-      try {
-        const storedHistory = await AsyncStorage.getItem(historyKey);
-        if (storedHistory) {
-          setHistory(JSON.parse(storedHistory));
+      const loadHistory = async () => {
+        try {
+          const storedHistory = await AsyncStorage.getItem(historyKey);
+          if (storedHistory) {
+            setHistory(JSON.parse(storedHistory));
+          }
+        } catch (e) {
+          console.error('Erro ao carregar o histórico:', e);
         }
-      } catch (e) {
-        console.error('Erro ao carregar o histórico:', e);
-      }
-    };
-    setInputValue(getValue().toString());
-    loadHistory();
-  }, []));
+      };
+      setInputValue(getValue().toString());
+      loadHistory();
+    }, []));
 
   const handleDeleteItem = (index: number) => {
     Alert.alert(
@@ -67,12 +67,12 @@ export default function FinancialScreen({
           onPress: () => {
             const uninvertedIndex = history.length - 1 - index;
             const itemToDelete = history[uninvertedIndex];
-            if(itemToDelete){
+            if (itemToDelete) {
               const newValue = getValue() - itemToDelete.valor;
               setValue(newValue);
               setInputValue(newValue.toString());
             }
-            
+
             const updatedHistory = history.filter((_, i) => i !== uninvertedIndex);
             setHistory(updatedHistory);
 
@@ -86,21 +86,26 @@ export default function FinancialScreen({
   return (
     <View style={styles.container}>
       <View style={styles.topBar}></View>
-      <View style={[styles.titleContainer, {backgroundColor: titleColor}]}>
+      <View style={[styles.titleContainer, { backgroundColor: titleColor }]}>
         <Link href="/(tabs)/explore" style={styles.chevronLeft}>
           <Icon name="chevron-left" size={30} color="#000" />
         </Link>
         <Text style={styles.text}>{title}</Text>
       </View>
-      
+
       <View style={styles.contentContainer}>
         <View style={styles.valueContainer}>
-          <Text style={styles.value}>{getValue().toFixed(2)}</Text>   
+          <Text style={styles.value}>{getValue().toFixed(2)}</Text>
         </View>
       </View>
-      
-      <View style={[styles.addDebit, {backgroundColor: buttonColor}]}>
-        <Link href={{ pathname: "/screens/DebitoScreen", params: { context: debitContext} }}>
+
+      <View style={[styles.addDebit, { backgroundColor: buttonColor }]}>
+        <Link
+          href={{
+            pathname: "/debitoRoute",
+            params: { context: debitContext }
+          }}
+        >
           <Text style={styles.debitText}>Adicionar débito</Text>
         </Link>
       </View>
@@ -111,13 +116,13 @@ export default function FinancialScreen({
       <View style={styles.history}>
         <ScrollView>
           {history.slice().reverse().map((entry: any, index) => (
-            
+
             <View key={index} style={styles.historyItem}>
               <Text style={styles.historyDescription}>{entry.description}</Text>
-              <Text 
-                style={[styles.historyValue,  
-                      { color: debitContext === 'investimentos' || entry.valor > 0 ? 'green' : '#d9534f' }]}
-                > R$ {entry.valor.toFixed(2)}</Text>
+              <Text
+                style={[styles.historyValue,
+                { color: debitContext === 'investimentos' || entry.valor > 0 ? 'green' : '#d9534f' }]}
+              > R$ {entry.valor.toFixed(2)}</Text>
               <TouchableOpacity onPress={() => handleDeleteItem(index)} style={styles.deleteButton}>
                 <Icon name="trash" size={20} color="#979c98" />
               </TouchableOpacity>
@@ -166,7 +171,7 @@ const styles = StyleSheet.create({
   },
   chevronLeft: {
     position: 'absolute',
-    left: 30, 
+    left: 30,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -202,7 +207,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 8, 
+    marginBottom: 8,
   },
   confirmOrCancelButton: {
     marginLeft: 30,
@@ -222,11 +227,11 @@ const styles = StyleSheet.create({
     marginTop: 60,
     borderWidth: 1.2,
   },
-  debitText:{
+  debitText: {
     fontSize: 18,
     fontWeight: 'bold',
   },
-  middleContainer:{
+  middleContainer: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
@@ -268,7 +273,7 @@ const styles = StyleSheet.create({
   },
   historyValue: {
     fontSize: 16,
-    color: '#d9534f', 
+    color: '#d9534f',
     fontWeight: 'bold',
   },
   deleteButton: {

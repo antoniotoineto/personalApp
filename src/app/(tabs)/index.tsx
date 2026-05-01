@@ -13,7 +13,7 @@ export default function HomeScreen() {
       <Text style={styles.title}>Antônio Neto</Text>
       <Text style={styles.date}>{currentDate}</Text>
       <LottieView
-        source={require('../../assets/gifs/LottieLego.json')} // Certifique-se de ter o arquivo JSON do Lottie no caminho correto
+        source={require('../../../assets/gifs/LottieLego.json')} // Certifique-se de ter o arquivo JSON do Lottie no caminho correto
         autoPlay
         loop
         style={styles.animation}
